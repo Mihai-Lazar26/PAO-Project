@@ -43,7 +43,8 @@ abstract public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(parola, user.parola);
+//        return Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(parola, user.parola);
+        return Objects.equals(username, user.username) || Objects.equals(email, user.email);
     }
 
     @Override
@@ -66,6 +67,14 @@ abstract public class User {
         else {
             System.out.println("Parola introdusa este gresita!");
         }
+    }
+
+    public Boolean login(String nume, String parola){
+        if((this.username == nume || this.email == nume) && this.checkPassword(parola)){
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
     }
 
     public void afis(){

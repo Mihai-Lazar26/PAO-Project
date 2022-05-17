@@ -6,11 +6,13 @@ public class Film {
     private String titlu;
     private String gen;
     private String rating;
+    private int durata;
 
-    public Film(String titlu, String gen, String rating){
+    public Film(String titlu, String gen, String rating, int durata){
         this.titlu = titlu;
         this.gen = gen;
         this.rating = rating;
+        this.durata = durata; // In minute
     }
 
     public void setTitlu(String titlu){
@@ -25,6 +27,10 @@ public class Film {
         this.rating = rating;
     }
 
+    public void setDurata(int durata) {
+        this.durata = durata;
+    }
+
     public String getGen() {
         return gen;
     }
@@ -35,6 +41,10 @@ public class Film {
 
     public String getTitlu() {
         return titlu;
+    }
+
+    public int getDurata() {
+        return durata;
     }
 
     @Override
@@ -58,4 +68,5 @@ public class Film {
                 ", rating='" + rating + '\'' +
                 '}';
     }
+
 }

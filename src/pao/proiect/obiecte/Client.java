@@ -2,9 +2,9 @@ package pao.proiect.obiecte;
 
 public class Client extends User{
     int age;
-    public Client(String username, String email, String parola, String age){
+    public Client(String username, String email, String parola, int age){
         super(username, email, parola);
-        this.age = Integer.parseInt(age);
+        this.age = age;
     }
 
     public int getAge() {
