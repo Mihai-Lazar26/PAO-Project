@@ -24,6 +24,8 @@ public class CinemaServices {
     private void showUser(){
         if(this.user != null){
             System.out.println(this.user);
+            LocalDateTime localDateTime = LocalDateTime.now();
+            cinemaData.saveLog("READ", localDateTime);
         }
         else{
             System.out.println("No user connected!");
@@ -186,6 +188,7 @@ public class CinemaServices {
     private void comenziClient(){
         Scanner scanner = new Scanner(System.in);
         Integer comanda;
+        LocalDateTime localDateTime;
         while (Boolean.TRUE){
             System.out.println("Apasati tastele:\n" +
                     "  1.cumpara bilet\n" +
@@ -217,10 +220,14 @@ public class CinemaServices {
                     break;
                 case 5:
                     cinemaData.save();
+                    localDateTime = LocalDateTime.now();
+                    cinemaData.saveLog("LOGOUT", localDateTime);
                     logout();
                     break;
                 case 6:
                     cinemaData.save();
+                    localDateTime = LocalDateTime.now();
+                    cinemaData.saveLog("EXIT", localDateTime);
                     System.exit(0);
                     break;
                 default:
@@ -236,6 +243,7 @@ public class CinemaServices {
     private void comenziAdmin(){
         Scanner scanner = new Scanner(System.in);
         Integer comanda;
+        LocalDateTime localDateTime;
         while(Boolean.TRUE){
             System.out.println("Apasati tastele:\n" +
                     "  1.adaugare cont nou admin\n" +
@@ -464,13 +472,19 @@ public class CinemaServices {
                     for(Bilet b : bileteShow){
                         System.out.println(b);
                     }
+                    localDateTime = LocalDateTime.now();
+                    cinemaData.saveLog("READ", localDateTime);
                     break;
                 case 11:
                     cinemaData.save();
                     logout();
+                    localDateTime = LocalDateTime.now();
+                    cinemaData.saveLog("LOGOUT", localDateTime);
                     break;
                 case 12:
                     cinemaData.save();
+                    localDateTime = LocalDateTime.now();
+                    cinemaData.saveLog("EXIT", localDateTime);
                     System.exit(0);
                     break;
                 default:
@@ -502,6 +516,8 @@ public class CinemaServices {
                     String parola = scanner.next();
                     login(nume, parola);
                     if(this.user != null){
+                        LocalDateTime localDateTime = LocalDateTime.now();
+                        cinemaData.saveLog("LOGIN", localDateTime);
                         if(this.user instanceof Client){
                             comenziClient();
                         }
@@ -525,6 +541,8 @@ public class CinemaServices {
                     break;
                 case 3:
                     cinemaData.save();
+                    LocalDateTime localDateTime = LocalDateTime.now();
+                    cinemaData.saveLog("EXIT", localDateTime);
                     System.exit(0);
                     break;
                 default:

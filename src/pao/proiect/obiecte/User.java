@@ -1,5 +1,6 @@
 package pao.proiect.obiecte;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 abstract public class User {
@@ -78,6 +79,9 @@ abstract public class User {
             if(parolaNoua.equals(reParolaNoua)){
                 this.parola = parolaNoua;
                 System.out.println("Parola a fost modificata cu succes!");
+                CinemaData cinemaData = CinemaData.getInstance();
+                LocalDateTime localDateTime = LocalDateTime.now();
+                cinemaData.saveLog("UPDATE", localDateTime);
             }
             else {
                 System.out.println("Parola introdusa este gresita!");
