@@ -140,7 +140,8 @@ public class CinemaServices {
                 System.out.print("Introduceti numarul locului: ");
                 comanda = scanner.nextInt();
                 if(locuri.contains(comanda)){
-                    addNewBilet(difuzare, comanda, 10);
+                    Client client = (Client) this.user;
+                    addNewBilet(difuzare, comanda, client.getPrice());
                 }
                 else{
                     System.out.println("Locul introdus este ocupat sau nu exista!");
@@ -193,6 +194,7 @@ public class CinemaServices {
                     "  4.arata userul curent\n" +
                     "  5.logout\n" +
                     "  6.exit");
+            System.out.print("Comanda: ");
             comanda = scanner.nextInt();
             switch (comanda){
                 case 1:
@@ -214,9 +216,11 @@ public class CinemaServices {
                     showUser();
                     break;
                 case 5:
+                    cinemaData.save();
                     logout();
                     break;
                 case 6:
+                    cinemaData.save();
                     System.exit(0);
                     break;
                 default:
@@ -246,6 +250,7 @@ public class CinemaServices {
                     "  10.arata datele\n" +
                     "  11.logout\n" +
                     "  12.exit");
+            System.out.print("Comanda: ");
             comanda = scanner.nextInt();
             switch (comanda){
                 case 1:
@@ -461,9 +466,11 @@ public class CinemaServices {
                     }
                     break;
                 case 11:
+                    cinemaData.save();
                     logout();
                     break;
                 case 12:
+                    cinemaData.save();
                     System.exit(0);
                     break;
                 default:
@@ -485,6 +492,7 @@ public class CinemaServices {
                     "  1.login\n" +
                     "  2.sign in\n" +
                     "  3.exit");
+            System.out.print("Comanda: ");
             comanda = scanner.nextInt();
             switch (comanda){
                 case 1:
@@ -516,6 +524,7 @@ public class CinemaServices {
                     signInClient(usernameC, emailC, parolaC, reParolaC, age);
                     break;
                 case 3:
+                    cinemaData.save();
                     System.exit(0);
                     break;
                 default:

@@ -39,7 +39,8 @@ public class Admin extends User{
     @Override
     public String toString() {
         return "Admin{" +
-                "username='" + this.getUsername() + '\'' +
+                "userId=" + this.getUserId() +
+                ", username='" + this.getUsername() + '\'' +
                 ", email='" + this.getEmail() + '\'' +
                 '}';
     }

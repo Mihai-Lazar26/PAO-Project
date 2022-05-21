@@ -7,8 +7,8 @@ public class Bilet {
     private int biletId;
     private int clientId;
     private int difuzareId;
-    private int pret;
     private int loc;
+    private int pret;
 
     public static Bilet newBilet(Client client, Difuzare difuzare, int loc, int pret){
         if(difuzare.getLoc(loc).equals(Boolean.FALSE)){
@@ -18,6 +18,17 @@ public class Bilet {
         return null;
     }
 
+    public static Bilet newBilet(int clientId, int difuzareId, int loc, int pret){
+        Bilet bilet = new Bilet(clientId, difuzareId, loc, pret);
+        return bilet;
+    }
+    private Bilet(int clientId, int difuzareId, int loc, int pret){
+        this.biletId = Iduri.getBiletId();
+        this.clientId = clientId;
+        this.difuzareId = difuzareId;
+        this.loc = loc;
+        this.pret = pret;
+    }
     private Bilet(Client client, Difuzare difuzare, int loc, int pret){
         this.biletId = Iduri.getBiletId();
         this.clientId = client.getUserId();
@@ -28,6 +39,14 @@ public class Bilet {
 
     public int getBiletId() {
         return biletId;
+    }
+
+    public int getDifuzareId() {
+        return difuzareId;
+    }
+
+    public int getClientId() {
+        return clientId;
     }
 
     public Client getClient() {

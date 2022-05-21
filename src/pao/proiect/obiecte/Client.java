@@ -18,9 +18,21 @@ public class Client extends User{
     @Override
     public String toString() {
         return "Client{" +
-                "username='" + this.getUsername() + '\'' +
+                "userId=" + this.getUserId() +
+                ", username='" + this.getUsername() + '\'' +
                 ", email='" + this.getEmail() + '\'' +
                 ", age=" + age +
                 '}';
+    }
+
+    public Integer getPrice(){
+        if(this.age <= 10){
+            return 10;
+        }
+        if(this.age <= 20){
+            return 15;
+        }
+
+        return 20;
     }
 }

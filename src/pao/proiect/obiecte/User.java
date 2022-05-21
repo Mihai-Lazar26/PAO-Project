@@ -39,10 +39,15 @@ abstract public class User {
         return this.email;
     }
 
+    public String getParola() {
+        return parola;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "userId=" + userId + '\'' +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

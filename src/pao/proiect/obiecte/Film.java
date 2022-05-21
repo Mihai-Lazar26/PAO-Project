@@ -73,7 +73,8 @@ public class Film {
     @Override
     public String toString() {
         return "Film{" +
-                "titlu='" + titlu + '\'' +
+                "filmId=" + filmId +
+                ", titlu='" + titlu + '\'' +
                 ", gen='" + gen + '\'' +
                 ", rating='" + rating + '\'' +
                 '}';

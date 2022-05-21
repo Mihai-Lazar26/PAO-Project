@@ -35,4 +35,20 @@ public class Sala {
                 ", nrLocuri=" + nrLocuri +
                 '}';
     }
+
+    public void setSalaId(int salaId) {
+        this.salaId = salaId;
+    }
+
+    public int getNrLocuri() {
+        return nrLocuri;
+    }
+
+    public int getSalaId() {
+        return salaId;
+    }
+
+    public String getNume() {
+        return nume;
+    }
 }

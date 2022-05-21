@@ -1,0 +1,6 @@
+userId,username,email,parola,age
+1,c1,ce1,cp1,10
+2,c2,ce2,cp2,25
+3,a1,ae1,ap1,null
+5,client,client@client.client,client,40
+6,admin,admin@admin.admin,admin,null

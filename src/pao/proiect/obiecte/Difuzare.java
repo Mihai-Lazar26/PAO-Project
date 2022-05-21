@@ -28,7 +28,6 @@ public class Difuzare {
     public Difuzare(Film film, Sala sala, LocalDateTime date){
         this.date = date;
         this.difuzareId = Iduri.getDifuzareId();
-        this.difuzareId = Iduri.getDifuzareId();
         this.filmId = film.getFilmId();
         this.salaId = sala.salaId;
 
@@ -36,6 +35,14 @@ public class Difuzare {
         for(int i = 0; i < sala.nrLocuri; ++i){
             this.locuri[i] = Boolean.FALSE;
         }
+    }
+
+    public Difuzare(int filmId, int salaId, Boolean locuri[], LocalDateTime date){
+        this.difuzareId = Iduri.getDifuzareId();
+        this.filmId = filmId;
+        this.salaId = salaId;
+        this.locuri = locuri;
+        this.date = date;
     }
 
     public void setDifuzareId(int difuzareId) {
@@ -63,7 +70,12 @@ public class Difuzare {
         this.locuri = new Boolean[salaNoua.nrLocuri];
 
         for(int i = 0; i < salaNoua.nrLocuri; ++i){
-            this.locuri[i] = oldLocuri[i];
+            if(i < oldLocuri.length){
+                this.locuri[i] = oldLocuri[i];
+            }
+            else{
+                this.locuri[i] = Boolean.FALSE;
+            }
         }
     }
 
@@ -85,6 +97,14 @@ public class Difuzare {
 
     public LocalDateTime getDate() {
         return date;
+    }
+
+    public int getSalaId() {
+        return salaId;
+    }
+
+    public int getFilmId() {
+        return filmId;
     }
 
     public Boolean getLoc(int loc){
@@ -111,6 +131,10 @@ public class Difuzare {
                 locuri.add(i+1);
             }
         }
+        return locuri;
+    }
+
+    public Boolean[] getLocuri() {
         return locuri;
     }
 

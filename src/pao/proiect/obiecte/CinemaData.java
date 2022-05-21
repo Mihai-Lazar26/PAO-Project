@@ -1,5 +1,7 @@
 package pao.proiect.obiecte;
 
+import pao.proiect.CSV.CSVReader;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -38,14 +40,54 @@ public class CinemaData {
                 LocalDateTime.of(2021, 6, 10, 15, 30)));
     }
 
+    public void loadCSV(){
+        CSVReader csvReader = CSVReader.getInstance();
+        this.users = csvReader.loadUsers();
+        this.filme = csvReader.loadFilme();
+        this.sali = csvReader.loadSali();
+        this.difuzari = csvReader.loadDifuzari();
+        for(Difuzare d: this.difuzari){
+            Sala sala = d.getSala();
+            d.setSala(sala);
+        }
+        this.bilete = csvReader.loadBilete();
+        Integer iduri[] = csvReader.loadIds();
+        Iduri.setUserId(iduri[0]);
+        Iduri.setFilmId(iduri[1]);
+        Iduri.setSalaId(iduri[2]);
+        Iduri.setDifuzareId(iduri[3]);
+        Iduri.setBiletId(iduri[4]);
+    }
+
+    public void saveCSV(){
+        CSVReader csvReader = CSVReader.getInstance();
+        csvReader.saveUsers(this.users);
+        csvReader.saveFilme(this.filme);
+        csvReader.saveSali(this.sali);
+        csvReader.saveDifuzari(this.difuzari);
+        csvReader.saveBilete(this.bilete);
+        Integer iduri[] = new Integer[5];
+        iduri[0] = Iduri.getUserId() - 1;
+        iduri[1] = Iduri.getFilmId() - 1;
+        iduri[2] = Iduri.getSalaId() - 1;
+        iduri[3] = Iduri.getDifuzareId() - 1;
+        iduri[4] = Iduri.getBiletId() - 1;
+        csvReader.saveIduri(iduri);
+    }
+
+    public void load(){
+        loadCSV();
+    }
+    public void save(){
+        saveCSV();
+    }
+
     private CinemaData(){
         this.users = new ArrayList<User>();
         this.filme = new LinkedList<Film>();
         this.sali = new ArrayList<Sala>();
         this.difuzari = new ArrayList<Difuzare>();
         this.bilete = new ArrayList<Bilet>();
-
-        tempLoadData();
     }
 
     public ArrayList<Difuzare> getDifuzari() {
