@@ -40,7 +40,7 @@ public class CinemaData {
                 LocalDateTime.of(2021, 6, 10, 15, 30)));
     }
 
-    public void loadCSV(){
+    private void loadCSV(){
         CSVReader csvReader = CSVReader.getInstance();
         this.users = csvReader.loadUsers();
         this.filme = csvReader.loadFilme();
@@ -59,7 +59,7 @@ public class CinemaData {
         Iduri.setBiletId(iduri[4]);
     }
 
-    public void saveCSV(){
+    private void saveCSV(){
         CSVReader csvReader = CSVReader.getInstance();
         csvReader.saveUsers(this.users);
         csvReader.saveFilme(this.filme);
@@ -75,11 +75,19 @@ public class CinemaData {
         csvReader.saveIduri(iduri);
     }
 
+    private void auditingCSV(String action, LocalDateTime timeStamp){
+        CSVReader csvReader = CSVReader.getInstance();
+        csvReader.saveAuditing(action, timeStamp);
+    }
+
     public void load(){
         loadCSV();
     }
     public void save(){
         saveCSV();
+    }
+    public void saveLog(String action, LocalDateTime timeStamp) {
+        auditingCSV(action, timeStamp);
     }
 
     private CinemaData(){
@@ -135,6 +143,8 @@ public class CinemaData {
         if(this.userIn(user) == Boolean.FALSE){
             this.users.add(user);
             System.out.println("Utilizatorul a fost adaugat cu succes!");
+            LocalDateTime localDateTime = LocalDateTime.now();
+            saveLog("CREATE", localDateTime);
         }
         else{
             System.out.println("Utilizatorul nu a fost adaugat!");
@@ -146,6 +156,8 @@ public class CinemaData {
         if(this.filmIn(film) == Boolean.FALSE){
             this.filme.add(film);
             System.out.println("Filmul a fost adaugat cu succes!");
+            LocalDateTime localDateTime = LocalDateTime.now();
+            saveLog("CREATE", localDateTime);
         }
         else{
             System.out.println("Filmul nu a fost adaugat!");
@@ -157,6 +169,8 @@ public class CinemaData {
         if(this.salaIn(sala) == Boolean.FALSE){
             this.sali.add(sala);
             System.out.println("Sala a fost adaugata cu succes!");
+            LocalDateTime localDateTime = LocalDateTime.now();
+            saveLog("CREATE", localDateTime);
         }
         else {
             System.out.println("Sala nu a fost adaugata!");
@@ -168,6 +182,8 @@ public class CinemaData {
         if(this.difuzareIn(difuzare) == Boolean.FALSE){
             this.difuzari.add(difuzare);
             System.out.println("Difuzarea a fost adaugata cu succes!");
+            LocalDateTime localDateTime = LocalDateTime.now();
+            saveLog("CREATE", localDateTime);
         }
         else {
             System.out.println("Difuzarea nu a fost adaugata!");
@@ -181,6 +197,8 @@ public class CinemaData {
             Difuzare dif = bilet.getDifuzare();
             dif.setLoc(bilet.getLoc(), Boolean.TRUE);
             System.out.println("Biletul a fost adaugat cu succes!");
+            LocalDateTime localDateTime = LocalDateTime.now();
+            saveLog("CREATE_UPDATE", localDateTime);
         }
         else {
             System.out.println("Biletul nu a fost adaugat");
@@ -194,6 +212,8 @@ public class CinemaData {
             if(u.equals(user)){
                 this.users.remove(u);
                 System.out.println("Utilizatorul a fost eliminat cu succes!");
+                LocalDateTime localDateTime = LocalDateTime.now();
+                saveLog("DELETE", localDateTime);
                 return;
             }
         }
@@ -218,6 +238,8 @@ public class CinemaData {
                 }
                 this.filme.remove(f);
                 System.out.println("Filmul a fost eliminat cu succes!");
+                LocalDateTime localDateTime = LocalDateTime.now();
+                saveLog("DELETE", localDateTime);
                 return;
             }
         }
@@ -242,6 +264,8 @@ public class CinemaData {
                 }
                 this.sali.remove(s);
                 System.out.println("Sala a fost eliminata cu succes!");
+                LocalDateTime localDateTime = LocalDateTime.now();
+                saveLog("DELETE", localDateTime);
                 return;
             }
         }
@@ -260,6 +284,8 @@ public class CinemaData {
                 }
                 this.difuzari.remove(d);
                 System.out.println("Difuzarea a fost eliminata cu succes!");
+                LocalDateTime localDateTime = LocalDateTime.now();
+                saveLog("DELETE", localDateTime);
                 return;
             }
         }
@@ -290,6 +316,8 @@ public class CinemaData {
                 }
                 this.bilete.remove((b));
                 System.out.println("Biletul a fost eliminat cu succes!");
+                LocalDateTime localDateTime = LocalDateTime.now();
+                saveLog("DELETE_UPDATE", localDateTime);
                 return;
             }
         }

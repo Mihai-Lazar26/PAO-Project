@@ -20,6 +20,8 @@ public class CSVReader {
     private String iduriPath;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    private String auditingPath;
+
     public static CSVReader getInstance() {
         if(instance == null){
             instance = new CSVReader();
@@ -35,6 +37,7 @@ public class CSVReader {
         this.difuzariPath = path + "\\difuzari.csv";
         this.biletePath = path + "\\bilete.csv";
         this.iduriPath = path + "\\iduri.csv";
+        this.auditingPath = path + "\\auditing.csv";
     }
 
     public ArrayList<User> loadUsers(){
@@ -307,6 +310,19 @@ public class CSVReader {
             String primaLinie = "userId,filmId,salaId,difuzareId,biletId";
             pw.println(primaLinie);
             pw.println("" + iduri[0] + ',' + iduri[1] + ',' + iduri[2] + ',' + iduri[3] + ',' + iduri[4]);
+            pw.flush();
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveAuditing(String action, LocalDateTime timeStamp){
+        try{
+            BufferedWriter bw = new BufferedWriter(new FileWriter(this.auditingPath, true));
+            PrintWriter pw = new PrintWriter(bw);
+            String formatedDate = timeStamp.format(formatter);
+            pw.println("" + action + ',' + formatedDate);
             pw.flush();
             pw.close();
         } catch (IOException e) {
