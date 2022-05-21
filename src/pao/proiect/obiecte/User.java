@@ -3,14 +3,20 @@ package pao.proiect.obiecte;
 import java.util.Objects;
 
 abstract public class User {
+    private int userId;
     private String username;
     private String email;
     private String parola;
 
     public User(String username, String email, String parola){
+        this.userId = Iduri.getUserId();
         this.username = username;
         this.email = email;
         this.parola = parola;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setUsername(String username){
@@ -19,6 +25,10 @@ abstract public class User {
 
     public void setEmail(String email){
         this.email = email;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public String getUsername(){
@@ -34,7 +44,6 @@ abstract public class User {
         return "User{" +
                 "username='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", parola='" + parola + '\'' +
                 '}';
     }
 
@@ -53,16 +62,21 @@ abstract public class User {
     }
 
     public Boolean checkPassword(String parola){
-        if(this.parola == parola){
+        if(this.parola.equals(parola)){
             return true;
         }
         return false;
     }
 
-    public void changePassword(String parola, String parolaNoua){
-        if(this.checkPassword(parola)){
-            this.parola = parolaNoua;
-            System.out.println("Parola a fost modificata cu succes!");
+    public void changePassword(String parolaVeche, String parolaNoua, String reParolaNoua){
+        if(this.checkPassword(parolaVeche)){
+            if(parolaNoua.equals(reParolaNoua)){
+                this.parola = parolaNoua;
+                System.out.println("Parola a fost modificata cu succes!");
+            }
+            else {
+                System.out.println("Parola introdusa este gresita!");
+            }
         }
         else {
             System.out.println("Parola introdusa este gresita!");
@@ -70,7 +84,7 @@ abstract public class User {
     }
 
     public Boolean login(String nume, String parola){
-        if((this.username == nume || this.email == nume) && this.checkPassword(parola)){
+        if((this.username.equals(nume) || this.email.equals(nume)) && this.checkPassword(parola)){
             return Boolean.TRUE;
         }
 

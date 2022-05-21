@@ -3,16 +3,22 @@ package pao.proiect.obiecte;
 import java.util.Objects;
 
 public class Film {
+    private int filmId;
     private String titlu;
     private String gen;
     private String rating;
     private int durata;
 
     public Film(String titlu, String gen, String rating, int durata){
+        this.filmId = Iduri.getFilmId();
         this.titlu = titlu;
         this.gen = gen;
         this.rating = rating;
         this.durata = durata; // In minute
+    }
+
+    public void setFilmId(int filmId) {
+        this.filmId = filmId;
     }
 
     public void setTitlu(String titlu){
@@ -29,6 +35,10 @@ public class Film {
 
     public void setDurata(int durata) {
         this.durata = durata;
+    }
+
+    public int getFilmId() {
+        return filmId;
     }
 
     public String getGen() {

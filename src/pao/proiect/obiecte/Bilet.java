@@ -1,34 +1,44 @@
 package pao.proiect.obiecte;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Bilet {
-    private Client client;
-    private Difuzare difuzare;
+
+    private int biletId;
+    private int clientId;
+    private int difuzareId;
     private int pret;
     private int loc;
 
-    public static Bilet newBilet(Client client, Difuzare difuzare, int pret, int loc){
-        if(difuzare.getLoc(loc) == Boolean.FALSE){
-            Bilet bilet = new Bilet(client, difuzare, pret, loc);
+    public static Bilet newBilet(Client client, Difuzare difuzare, int loc, int pret){
+        if(difuzare.getLoc(loc).equals(Boolean.FALSE)){
+            Bilet bilet = new Bilet(client, difuzare, loc, pret);
             return bilet;
         }
         return null;
     }
 
-    private Bilet(Client client, Difuzare difuzare, int pret, int loc){
-        this.client = client;
-        this.difuzare = difuzare;
+    private Bilet(Client client, Difuzare difuzare, int loc, int pret){
+        this.biletId = Iduri.getBiletId();
+        this.clientId = client.getUserId();
+        this.difuzareId = difuzare.getDifuzareId();
         this.pret = pret;
         this.loc = loc;
     }
 
+    public int getBiletId() {
+        return biletId;
+    }
+
     public Client getClient() {
+        CinemaData cinemaData = CinemaData.getInstance();
+        Client client = (Client) cinemaData.getUserById(this.clientId);
         return client;
     }
 
     public Difuzare getDifuzare() {
+        CinemaData cinemaData = CinemaData.getInstance();
+        Difuzare difuzare = cinemaData.getDifuzareById(this.difuzareId);
         return difuzare;
     }
 
@@ -40,13 +50,17 @@ public class Bilet {
         return loc;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setBiletId(int biletId) {
+        this.biletId = biletId;
     }
 
-    public void setDifuzare(Difuzare difuzare) {
-        this.difuzare = difuzare;
-    }
+//    public void setClient(Client client) {
+//        this.clientId = client.getUserId();
+//    }
+//
+//    public void setDifuzare(Difuzare difuzare) {
+//        this.difuzareId = difuzare.getDifuzareId();
+//    }
 
     public void setPret(int pret) {
         this.pret = pret;
@@ -61,11 +75,23 @@ public class Bilet {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Bilet bilet = (Bilet) o;
-        return loc == bilet.loc && Objects.equals(difuzare, bilet.difuzare);
+
+        return loc == bilet.loc && Objects.equals(this.getDifuzare(), bilet.getDifuzare());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(difuzare, loc);
+        return Objects.hash(this.getDifuzare(), loc);
+    }
+
+    @Override
+    public String toString() {
+        return "Bilet{" +
+                "biletId=" + biletId +
+                ", clientId=" + clientId +
+                ", difuzareId=" + difuzareId +
+                ", pret=" + pret +
+                ", loc=" + loc +
+                '}';
     }
 }

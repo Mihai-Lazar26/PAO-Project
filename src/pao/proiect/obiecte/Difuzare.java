@@ -2,62 +2,84 @@ package pao.proiect.obiecte;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Difuzare {
-    private Film film;
-    private Sala sala;
-    private Boolean locuriOcupate[];
+
+    private int difuzareId;
+    private int filmId;
+    private int salaId;
+    private Boolean locuri[];
     private LocalDateTime date;
 
     public Difuzare(Film film, Sala sala){
         this.date = LocalDateTime.now();
-        this.film = film;
-        this.sala = sala;
+        this.difuzareId = Iduri.getDifuzareId();
+        this.filmId = film.getFilmId();
+        this.salaId = sala.salaId;
 
-        this.locuriOcupate = new Boolean[sala.nrLocuri];
-        for(int i = 0; i < this.sala.nrLocuri; ++i){
-            this.locuriOcupate[i] = Boolean.FALSE;
+        this.locuri = new Boolean[sala.nrLocuri];
+        for(int i = 0; i < sala.nrLocuri; ++i){
+            this.locuri[i] = Boolean.FALSE;
         }
     }
 
     public Difuzare(Film film, Sala sala, LocalDateTime date){
         this.date = date;
-        this.film = film;
-        this.sala = sala;
+        this.difuzareId = Iduri.getDifuzareId();
+        this.difuzareId = Iduri.getDifuzareId();
+        this.filmId = film.getFilmId();
+        this.salaId = sala.salaId;
 
-        this.locuriOcupate = new Boolean[sala.nrLocuri];
-        for(int i = 0; i < this.sala.nrLocuri; ++i){
-            this.locuriOcupate[i] = Boolean.FALSE;
+        this.locuri = new Boolean[sala.nrLocuri];
+        for(int i = 0; i < sala.nrLocuri; ++i){
+            this.locuri[i] = Boolean.FALSE;
         }
     }
 
+    public void setDifuzareId(int difuzareId) {
+        this.difuzareId = difuzareId;
+    }
+
     public void setLoc(int nrLoc, Boolean bool){
-        this.locuriOcupate[nrLoc-1] = bool;
+        this.locuri[nrLoc-1] = bool;
     }
 
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-    public void setFilm(Film film) {
-        this.film = film;
+    public void setFilmId(Film film) {
+        this.filmId = film.getFilmId();
     }
 
     public void setSala(Sala sala) {
-        this.sala = sala;
-        Boolean oldLocuri[] = this.locuriOcupate;
-        this.locuriOcupate = new Boolean[this.sala.nrLocuri];
-        for(int i = 0; i < this.sala.nrLocuri; ++i){
-            this.locuriOcupate[i] = oldLocuri[i];
+        this.salaId = sala.salaId;
+        CinemaData cinemaData = CinemaData.getInstance();
+        Sala salaNoua = cinemaData.getSalaById(this.salaId);
+
+        Boolean oldLocuri[] = this.locuri;
+        this.locuri = new Boolean[salaNoua.nrLocuri];
+
+        for(int i = 0; i < salaNoua.nrLocuri; ++i){
+            this.locuri[i] = oldLocuri[i];
         }
     }
 
+    public int getDifuzareId() {
+        return difuzareId;
+    }
+
     public Film getFilm() {
+        CinemaData cinemaData = CinemaData.getInstance();
+        Film film = cinemaData.getFilmById(this.filmId);
         return film;
     }
 
     public Sala getSala() {
+        CinemaData cinemaData = CinemaData.getInstance();
+        Sala sala = cinemaData.getSalaById(this.salaId);
         return sala;
     }
 
@@ -66,14 +88,15 @@ public class Difuzare {
     }
 
     public Boolean getLoc(int loc){
-        return this.locuriOcupate[loc-1];
+        return this.locuri[loc-1];
     }
 
 
     public ArrayList<Integer> getLocuriLibere(){
         ArrayList<Integer> locuri = new ArrayList<Integer>();
-        for(int i = 0; i < this.sala.nrLocuri; ++i){
-            if(this.locuriOcupate[i] == Boolean.FALSE){
+        Sala sala = this.getSala();
+        for(int i = 0; i < sala.nrLocuri; ++i){
+            if(this.locuri[i] == Boolean.FALSE){
                 locuri.add(i+1);
             }
         }
@@ -82,12 +105,22 @@ public class Difuzare {
 
     public ArrayList<Integer> getLocuriOcupate(){
         ArrayList<Integer> locuri = new ArrayList<Integer>();
-        for(int i = 0; i < this.sala.nrLocuri; ++i){
-            if(this.locuriOcupate[i] == Boolean.TRUE){
+        Sala sala = this.getSala();
+        for(int i = 0; i < sala.nrLocuri; ++i){
+            if(this.locuri[i] == Boolean.TRUE){
                 locuri.add(i+1);
             }
         }
         return locuri;
+    }
+
+    public void afisLocuri(){
+        for (int i = 0; i < this.locuri.length; ++i){
+            System.out.print(i+1);
+            System.out.print(": ");
+            System.out.print(this.locuri[i]);
+            System.out.println();
+        }
     }
 
     @Override
@@ -96,11 +129,13 @@ public class Difuzare {
         if (o == null || getClass() != o.getClass()) return false;
 
         Difuzare difuzare = (Difuzare) o;
+        Film film1 = this.getFilm();
+        Film film2 = difuzare.getFilm();
 
         LocalDateTime dateA1 = this.date;
-        LocalDateTime dateA2 = dateA1.plusMinutes(this.film.getDurata());
+        LocalDateTime dateA2 = dateA1.plusMinutes(film1.getDurata());
         LocalDateTime dateB1 = difuzare.date;
-        LocalDateTime dateB2 = dateB1.plusMinutes(difuzare.film.getDurata());
+        LocalDateTime dateB2 = dateB1.plusMinutes(film2.getDurata());
 
         int pauzaIntreDifuzari = 10;
         dateA1 = dateA1.minusMinutes(pauzaIntreDifuzari);
@@ -117,11 +152,26 @@ public class Difuzare {
             intersect = Boolean.TRUE;
         }
 
-        return Objects.equals(sala, difuzare.sala) && intersect;
+        Sala sala1 = this.getSala();
+        Sala sala2 = difuzare.getSala();
+
+        return Objects.equals(sala1, sala2) && intersect;
     }
 
     @Override
     public int hashCode() {
+        Film film = this.getFilm();
+        Sala sala = this.getSala();
         return Objects.hash(film, sala, date);
+    }
+
+    @Override
+    public String toString() {
+        return "Difuzare{" +
+                "difuzareId=" + difuzareId +
+                ", filmId=" + this.getFilm().toString() +
+                ", salaId=" + this.getSala().toString() +
+                ", date=" + date +
+                '}';
     }
 }

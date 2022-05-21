@@ -1,5 +1,6 @@
 package pao.proiect.obiecte;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -19,12 +20,32 @@ public class CinemaData {
         return instance;
     }
 
+    private void tempLoadData(){
+        this.users.add(new Client("c1", "ce1", "cp1", 10));
+        this.users.add(new Client("c2", "ce2", "cp2", 20));
+        this.users.add(new Admin("a1", "ae1", "ap1"));
+        this.users.add(new Admin("a2", "ae2", "ap2"));
+
+        this.filme.add(new Film("film 1", "actiune", "PG", 120));
+        this.filme.add(new Film("film 2", "aventura", "R", 110));
+
+        this.sali.add(new Sala("sala A", 100));
+        this.sali.add(new Sala("Sala B", 50));
+
+        this.difuzari.add(new Difuzare(this.filme.get(1), this.sali.get(1),
+                LocalDateTime.of(2022, 5, 25, 20, 0)));
+        this.difuzari.add(new Difuzare(this.filme.get(0), this.sali.get(0),
+                LocalDateTime.of(2021, 6, 10, 15, 30)));
+    }
+
     private CinemaData(){
         this.users = new ArrayList<User>();
         this.filme = new LinkedList<Film>();
         this.sali = new ArrayList<Sala>();
         this.difuzari = new ArrayList<Difuzare>();
         this.bilete = new ArrayList<Bilet>();
+
+        tempLoadData();
     }
 
     public ArrayList<Difuzare> getDifuzari() {
@@ -203,6 +224,17 @@ public class CinemaData {
         System.out.println("Difuzarea nu a fost eliminata!");
     }
 
+    public ArrayList<Difuzare> findDifuzariValabile(){
+        ArrayList<Difuzare> difuzariDisponibile = new ArrayList<Difuzare>();
+        for(Difuzare d : this.difuzari){
+            ArrayList<Integer> locuri = d.getLocuriLibere();
+            if(locuri.size() != 0 && LocalDateTime.now().isBefore(d.getDate())){
+                difuzariDisponibile.add(d);
+            }
+        }
+        return difuzariDisponibile;
+    }
+
 
     public void removeBilet(Bilet bilet){
         ArrayList<Bilet> bileteCopy = new ArrayList<Bilet>(this.bilete);
@@ -259,6 +291,7 @@ public class CinemaData {
     }
 
     public Boolean biletIn(Bilet bilet){
+
         for(Bilet b : this.bilete){
             if(b.equals(bilet)){
                 return Boolean.TRUE;
@@ -275,6 +308,81 @@ public class CinemaData {
         }
 
         return null;
+    }
+
+    public User getUserById(int id){
+        for(User u : this.users){
+            if(u.getUserId() == id){
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public Film getFilmById(int id){
+        for(Film f : this.filme){
+            if(f.getFilmId() == id){
+                return f;
+            }
+        }
+        return null;
+    }
+
+    public Sala getSalaById(int id){
+        for (Sala s : this.sali){
+            if(s.salaId == id){
+                return s;
+            }
+        }
+        return null;
+    }
+
+    public Difuzare getDifuzareById(int id){
+        for(Difuzare d : this.difuzari){
+            if(d.getDifuzareId() == id){
+                return d;
+            }
+        }
+        return null;
+    }
+
+    public Bilet getBiletById(int id){
+        for(Bilet b : this.bilete){
+            if(b.getBiletId() == id){
+                return b;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Bilet> getClientBileteAnulabile(Client client){
+        ArrayList<Bilet> bileteClient = new ArrayList<Bilet>();
+        for (Bilet b : this.bilete){
+            Client clientBilet = b.getClient();
+            Difuzare difuzareBilet = b.getDifuzare();
+            LocalDateTime dateDifuzare = difuzareBilet.getDate();
+            dateDifuzare = dateDifuzare.minusDays(1);
+
+            if(client.equals(clientBilet) && LocalDateTime.now().isBefore(dateDifuzare)){
+                bileteClient.add(b);
+            }
+        }
+        return  bileteClient;
+    }
+
+    public ArrayList<Admin> getAdmini(Admin admin){
+        ArrayList<Admin> admini = new ArrayList<Admin>();
+        for(User u : this.users){
+            if(u instanceof Admin){
+                Admin adminObj = (Admin) u;
+                if(adminObj.equals(admin)){
+                    continue;
+                }
+
+                admini.add(adminObj);
+            }
+        }
+        return admini;
     }
 
 }
