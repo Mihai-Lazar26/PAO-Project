@@ -1,6 +1,7 @@
 package pao.proiect.obiecte;
 
 import pao.proiect.CSV.CSVReader;
+import pao.proiect.JDBC.JDBCHandler;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -80,14 +81,58 @@ public class CinemaData {
         csvReader.saveAuditing(action, timeStamp);
     }
 
+    //-------------------------------------
+    private void loadJDBC(){
+        JDBCHandler jdbcHandler = JDBCHandler.getInstamnce();
+        this.users = jdbcHandler.loadUsers();
+        this.filme = jdbcHandler.loadFilme();
+        this.sali = jdbcHandler.loadSali();
+        this.difuzari = jdbcHandler.loadDifuzari();
+        for(Difuzare d: this.difuzari){
+            Sala sala = d.getSala();
+            d.setSala(sala);
+        }
+        this.bilete = jdbcHandler.loadBilete();
+        Integer iduri[] = jdbcHandler.loadIds();
+        Iduri.setUserId(iduri[0]);
+        Iduri.setFilmId(iduri[1]);
+        Iduri.setSalaId(iduri[2]);
+        Iduri.setDifuzareId(iduri[3]);
+        Iduri.setBiletId(iduri[4]);
+    }
+
+    private void saveJDBC(){
+        JDBCHandler jdbcHandler = JDBCHandler.getInstamnce();
+        jdbcHandler.saveUsers(this.users);
+        jdbcHandler.saveFilme(this.filme);
+        jdbcHandler.saveSali(this.sali);
+        jdbcHandler.saveDifuzari(this.difuzari);
+        jdbcHandler.saveBilete(this.bilete);
+        Integer iduri[] = new Integer[5];
+        iduri[0] = Iduri.getUserId() - 1;
+        iduri[1] = Iduri.getFilmId() - 1;
+        iduri[2] = Iduri.getSalaId() - 1;
+        iduri[3] = Iduri.getDifuzareId() - 1;
+        iduri[4] = Iduri.getBiletId() - 1;
+        jdbcHandler.saveIduri(iduri);
+    }
+
+    private void auditingJDBC(String action, LocalDateTime timeStamp){
+        JDBCHandler jdbcHandler = JDBCHandler.getInstamnce();
+        jdbcHandler.saveAuditing(action, timeStamp);
+    }
+
     public void load(){
-        loadCSV();
+//        loadCSV();
+        loadJDBC();
     }
     public void save(){
-        saveCSV();
+//        saveCSV();
+        saveJDBC();
     }
     public void saveLog(String action, LocalDateTime timeStamp) {
-        auditingCSV(action, timeStamp);
+//        auditingCSV(action, timeStamp);
+        auditingJDBC(action, timeStamp);
     }
 
     private CinemaData(){

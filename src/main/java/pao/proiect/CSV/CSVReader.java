@@ -30,7 +30,7 @@ public class CSVReader {
     }
 
     private CSVReader(){
-        String path = System.getProperty("user.dir") + "\\src\\pao\\proiect\\CSV";
+        String path = System.getProperty("user.dir") + "\\src\\main\\java\\pao\\proiect\\CSV";
         this.usersPath = path + "\\users.csv";
         this.filmePath = path + "\\filme.csv";
         this.saliPath = path + "\\sali.csv";

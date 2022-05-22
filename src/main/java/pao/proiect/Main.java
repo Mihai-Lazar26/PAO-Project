@@ -1,12 +1,11 @@
 package pao.proiect;
 
-import pao.proiect.CSV.CSVReader;
+import pao.proiect.JDBC.JDBCHandler;
+import pao.proiect.config.DatabaseConfiguration;
 import pao.proiect.obiecte.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.sql.Connection;
+
 
 public class Main {
 
