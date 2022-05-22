@@ -182,7 +182,6 @@ public class CSVReader {
             BufferedReader br = new BufferedReader(new FileReader(this.iduriPath));
             line = br.readLine();
             line = br.readLine();
-            System.out.println(line);
             String[] values = line.split(",");
             for(int i = 0; i < values.length; ++i){
                 iduri[i] = Integer.parseInt(values[i]);
