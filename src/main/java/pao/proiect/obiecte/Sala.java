@@ -1,6 +1,5 @@
 package pao.proiect.obiecte;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Sala {

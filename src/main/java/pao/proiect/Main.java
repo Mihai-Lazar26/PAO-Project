@@ -1,11 +1,6 @@
 package pao.proiect;
 
-import pao.proiect.JDBC.JDBCHandler;
-import pao.proiect.config.DatabaseConfiguration;
 import pao.proiect.obiecte.*;
-
-import java.sql.Connection;
-
 
 public class Main {
 

@@ -2,12 +2,10 @@ package pao.proiect.CSV;
 
 import pao.proiect.obiecte.*;
 
-import javax.imageio.IIOException;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class CSVReader {
@@ -177,6 +175,9 @@ public class CSVReader {
 
     public Integer[] loadIds(){
         Integer iduri[] = new Integer[5];
+        for(Integer i = 0; i < 5; ++i){
+            iduri[i] = 0;
+        }
         String line;
         try{
             BufferedReader br = new BufferedReader(new FileReader(this.iduriPath));

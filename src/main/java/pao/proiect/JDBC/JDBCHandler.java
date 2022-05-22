@@ -3,10 +3,6 @@ package pao.proiect.JDBC;
 import pao.proiect.config.DatabaseConfiguration;
 import pao.proiect.obiecte.*;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +21,7 @@ public class JDBCHandler {
     }
 
     private JDBCHandler(){
-
+        init();
     }
 
     public void createUser(){
@@ -356,6 +352,9 @@ public class JDBCHandler {
         String query = "SELECT * FROM iduri";
 
         Integer iduri[] = new Integer[5];
+        for(Integer i = 0; i < 5; ++i){
+            iduri[i] = 0;
+        }
 
         try(Statement statement = connection.createStatement()){
             ResultSet resultSet = statement.executeQuery(query);
